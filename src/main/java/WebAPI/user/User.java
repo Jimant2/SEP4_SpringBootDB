@@ -3,17 +3,16 @@ package WebAPI.user;
 import WebAPI.Terrarium.Terrarium;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 
-@Entity
+
+@Entity(name = "Users")
 @Table(name = "users")
 public class User {
 
 
-    @OneToMany(mappedBy = "terrarium", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Terrarium> terrariums = new HashSet<>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Terrarium terrarium;
 
 
 
@@ -38,11 +37,18 @@ public class User {
     public User()
     {}
 
-    public User(Long userId, String username)
+    public User( String username)
     {
-        this.userId=userId;
         this.username = username;
 
+    }
+
+    public Terrarium getTerrarium() {
+        return terrarium;
+    }
+
+    public void setTerrarium(Terrarium terrarium) {
+        this.terrarium = terrarium;
     }
 
     public Long getUserId() {

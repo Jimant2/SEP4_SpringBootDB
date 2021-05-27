@@ -8,6 +8,7 @@ import WebAPI.TerrariumProfile.TerrariumProfile;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,8 +19,6 @@ import java.util.Set;
 public class Task {
 
 
-    @OneToMany(mappedBy = "terrarium", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Terrarium> terrariums = new HashSet<>();
 
 
     @Id
@@ -34,19 +33,17 @@ public class Task {
             }
     )
 
-    @Column(name = "taskId", updatable = false)
+
+    @Column(name = "task_Id", updatable = false)
     private Long taskId;
     @Column(name = "time", nullable = false)
-    private LocalDateTime time;
+    private Timestamp time;
     @Column(nullable = false)
     private String name;
     @ManyToOne
-    @JoinColumns({@JoinColumn(name = "taskListId", referencedColumnName = "taskListId"),
+    @JoinColumns({@JoinColumn(name = "task_List_Id", referencedColumnName = "taskListId"),
                 })
     private TaskList taskList;
-    @ManyToOne
-    @JoinColumn(name = "profileid", referencedColumnName = "profileid")
-    private TerrariumProfile terrariumProfile;
 
 
     public Task()
@@ -54,12 +51,11 @@ public class Task {
 
     }
 
-    public Task(Long taskId, LocalDateTime time, String name, TaskList taskList, TerrariumProfile terrariumProfile) {
-        this.taskId = taskId;
-        this.time = time;
+    public Task(String name) {
+        this.time = Timestamp.valueOf(LocalDateTime.now());
         this.name = name;
-        this.taskList = taskList;
-        this.terrariumProfile = terrariumProfile;
+        this.taskList = getTaskList();
+
     }
 
     public Long getTaskId() {
@@ -70,11 +66,11 @@ public class Task {
         this.taskId = taskId;
     }
 
-    public LocalDateTime getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 
@@ -92,13 +88,5 @@ public class Task {
 
     public void setTaskList(TaskList taskList) {
         this.taskList = taskList;
-    }
-
-    public TerrariumProfile getTerrariumProfile() {
-        return terrariumProfile;
-    }
-
-    public void setTerrariumProfile(TerrariumProfile terrariumProfile) {
-        this.terrariumProfile = terrariumProfile;
     }
 }

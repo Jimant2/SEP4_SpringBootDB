@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 public class TerrariumProfileController {
     private final TerrariumProfileRepository terrariumProfileRepository;
@@ -29,6 +30,8 @@ public class TerrariumProfileController {
                 () -> new TerrariumProfileNotFoundException(profileId)
         );
     }
+
+    @PutMapping("/TerrariumProfile/{profileId}")
     TerrariumProfile updateTerrariumProfile(@RequestBody TerrariumProfile newTerrariumProfile, @PathVariable Long profileId)
     {
         return terrariumProfileRepository.findById(profileId)
@@ -44,6 +47,7 @@ public class TerrariumProfileController {
                     terrariumProfile.setMinAllowedLightLevel(newTerrariumProfile.getMinAllowedLightLevel());
                     terrariumProfile.setMaxAllowedTemp(newTerrariumProfile.getMaxAllowedTemp());
                     terrariumProfile.setMinAllowedTemp(newTerrariumProfile.getMinAllowedTemp());
+                    terrariumProfile.setTerrariumProfileId(newTerrariumProfile.getTerrariumProfileId());
                     return terrariumProfileRepository.save(newTerrariumProfile);
                 })
                 .orElseGet(() -> {

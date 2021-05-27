@@ -2,16 +2,23 @@ package WebAPI.Terrarium;
 
 import WebAPI.Sensor.Sensor;
 import WebAPI.Task.Task;
+import WebAPI.TaskList.TaskList;
+import WebAPI.TerrariumProfile.TerrariumProfile;
 import WebAPI.user.User;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity(name = "Terrarium")
 @Table(name = "terrarium")
 public class Terrarium {
 
+
+    @OneToMany(mappedBy = "terrariumId",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<TerrariumProfile> terrariumProfiles = new HashSet<>();
 
 
     @Id
@@ -25,31 +32,45 @@ public class Terrarium {
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
-    @Column(updatable = false)
+    @Column(name = "terrarium_Id", updatable = false)
     private Long TerrariumId;
     @ManyToOne
-    @JoinColumn(name = "valueid")
+    @JoinColumns({@JoinColumn(name = "sensor_Id", referencedColumnName = "sensor_id"),
+            @JoinColumn(name = "typeId", referencedColumnName = "typeId")})
     private Sensor sensor;
     @Column(nullable = false)
     private String TerrariumName;
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "task_list_id")
+    private TaskList taskList;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_Id")
     private User user;
-    @ManyToOne
-    @JoinColumns({@JoinColumn (name = "taskid", referencedColumnName = "taskid"), @JoinColumn (name = "profileid",
-    referencedColumnName = "profileid"), @JoinColumn(name = "taskListId", referencedColumnName = "taskListId")})
-    private Task task;
+
 
 
     public Terrarium(){}
 
 
-    public Terrarium(Long terrariumId, Sensor sensor, String terrariumName, User user, Task task) {
-        TerrariumId = terrariumId;
-        this.sensor = sensor;
-        TerrariumName = terrariumName;
-        this.user = user;
-        this.task = task;
+    public Terrarium(String terrariumName) {
+        this.TerrariumName = terrariumName;
+        this.sensor = getSensor();
+        this.user= getUser();
+        this.terrariumProfiles = new HashSet<>();
+    }
+
+    public void addTerrariumProfileToTerrarium(TerrariumProfile terrariumProfile)
+    {
+        this.terrariumProfiles.add(terrariumProfile);
+    }
+
+
+    public Set<TerrariumProfile> getTerrariumProfiles() {
+        return terrariumProfiles;
+    }
+
+    public void setTerrariumProfiles(Set<TerrariumProfile> terrariumProfiles) {
+        this.terrariumProfiles = terrariumProfiles;
     }
 
     public Long getTerrariumId() {
@@ -82,13 +103,5 @@ public class Terrarium {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
     }
 }

@@ -1,7 +1,8 @@
 package WebAPI.TaskList;
 
+
 import WebAPI.Task.Task;
-import WebAPI.TerrariumProfile.TerrariumProfile;
+import WebAPI.Terrarium.Terrarium;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -15,7 +16,8 @@ public class TaskList {
 
     @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
-
+    @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Terrarium> terrariums = new HashSet<>();
 
     @Id
     @GeneratedValue(generator = "sequence-generator")
@@ -29,20 +31,39 @@ public class TaskList {
             }
     )
 
-    @Column(name = "taskListId", updatable = false)
+    @Column(name = "tasklistid", updatable = false)
     private Long taskListId;
-    @ManyToOne
-    @JoinColumn(name = "profileId")
-    private TerrariumProfile terrariumProfile;
 
-    public TaskList(Long taskListId, TerrariumProfile terrariumProfile) {
-        this.taskListId = taskListId;
-        this.terrariumProfile = terrariumProfile;
+
+
+
+    public TaskList(){
+
     }
 
 
+    public void addTaskToTaskList(Task task)
+    {
+        this.tasks.add(task);
+    }
 
-    public TaskList(){}
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public Set<Terrarium> getTerrariums() {
+        return terrariums;
+    }
+
+    public void setTerrariums(Set<Terrarium> terrariums) {
+        this.terrariums = terrariums;
+    }
+
+
 
     public Long getTaskListId() {
         return taskListId;
@@ -52,9 +73,4 @@ public class TaskList {
         this.taskListId = taskListId;
     }
 
-  public TerrariumProfile getTerrariumProfile() {
-      return terrariumProfile;}
-
-  public void setTerrariumProfile(TerrariumProfile terrariumProfile) {this.terrariumProfile = terrariumProfile;
-    }
 }

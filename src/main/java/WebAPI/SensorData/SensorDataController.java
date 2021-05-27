@@ -15,20 +15,23 @@ public class SensorDataController {
         this.sensorDataRepository = sensorDataRepository;
     }
 
-    @GetMapping("/SensorType")
+    @GetMapping("/SensorData")
     List<SensorData> all(){return sensorDataRepository.findAll();}
 
-    @PostMapping("/SensorType")
+    @PostMapping("/SensorData")
     SensorData newSensorData (@RequestBody SensorData sensorData)
     {
         return sensorDataRepository.save(sensorData);
     }
-    @GetMapping("/SensorType/{valueId}")
+    @GetMapping("/SensorData/{valueId}")
     SensorData one(@PathVariable Long valueId){
         return sensorDataRepository.findById(valueId).orElseThrow(
                 () -> new SensorDataNotFoundException(valueId)
         );
     }
+
+
+    @PutMapping("/SensorData/{valueId}")
     SensorData updateSensorData(@RequestBody SensorData newSensorData, @PathVariable Long valueId)
     {
         return sensorDataRepository.findById(valueId)
@@ -45,7 +48,7 @@ public class SensorDataController {
                     return sensorDataRepository.save(newSensorData);
                 });
     }
-    @DeleteMapping("SensorType/{valueId}")
+    @DeleteMapping("SensorData/{valueId}")
     void deleteSensorData(@PathVariable Long valueId)
     {
         sensorDataRepository.deleteById(valueId);

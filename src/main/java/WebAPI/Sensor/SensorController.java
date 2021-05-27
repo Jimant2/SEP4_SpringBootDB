@@ -1,13 +1,14 @@
 package WebAPI.Sensor;
 
 
-import WebAPI.SensorData.SensorData;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
 
 @RestController
+
 public class SensorController {
 
     private final SensorRepository sensorRepository;
@@ -20,30 +21,43 @@ public class SensorController {
     @GetMapping("/Sensor")
     List<Sensor> all(){return sensorRepository.findAll();}
 
+
     @PostMapping("/Sensor")
     Sensor newSensor (@RequestBody Sensor sensor)
     {
         return sensorRepository.save(sensor);
     }
-    @GetMapping("/Sensor/{sensorDataId}")
-    Sensor one(@PathVariable SensorData sensorDataId){
-        return sensorRepository.findById(sensorDataId).orElseThrow(
-                () -> new SensorNotFoundException(sensorDataId)
+
+
+    @GetMapping("/Sensor/{sensorId}")
+    Sensor one(@PathVariable Long sensorId){
+        return sensorRepository.findById(sensorId).orElseThrow(
+                () -> new SensorNotFoundException(sensorId)
         );
     }
-    Sensor updateSensor(@RequestBody Sensor newSensor, @PathVariable SensorData sensorDataId)
+
+
+
+
+    @PutMapping("/Sensor/{sensorId}")
+    Sensor updateSensor(@RequestBody Sensor newSensor, @PathVariable Long sensorId)
     {
-        return sensorRepository.findById(sensorDataId)
+        return sensorRepository.findById(sensorId)
                 .map(sensor -> {
-                    sensor.setSensorData(newSensor.getSensorData());
+                    sensor.setSensorId(newSensor.getSensorId());
                     sensor.setEUI(newSensor.getEUI());
+                    sensor.setSensorsData(newSensor.getSensorsData());
+                    sensor.setTypeId(newSensor.getTypeId());
+                    sensor.setTerrariums(newSensor.getTerrariums());
                     return sensorRepository.save(newSensor);
                 })
                 .orElseGet(() -> sensorRepository.save(newSensor));
     }
-    @DeleteMapping("SensorType/{sensorDataId}")
-    void deleteSensor(@PathVariable SensorData sensorDataId)
+
+
+    @DeleteMapping("Sensor/{sensorId}")
+    void deleteSensor(@PathVariable Long sensorId)
     {
-        sensorRepository.deleteById(sensorDataId);
+        sensorRepository.deleteById(sensorId);
     }
 }

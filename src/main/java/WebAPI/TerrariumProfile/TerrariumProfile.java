@@ -1,22 +1,19 @@
 package WebAPI.TerrariumProfile;
 
-import WebAPI.Task.Task;
-import WebAPI.TaskList.TaskList;
+
+import WebAPI.Terrarium.Terrarium;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Set;
+
 
 
 @Entity(name = "TerrariumProfile")
 @Table(name = "terrariumProfile")
 public class TerrariumProfile {
 
-    @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<TaskList> taskLists = new HashSet<>();
-    @OneToMany(mappedBy = "terrariumProfile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Task> tasks = new HashSet<>();
+
 
 
     @Id
@@ -49,6 +46,9 @@ public class TerrariumProfile {
     private int minAllowedC02;
     @Column(nullable = false)
     private int maxAllowedC02;
+    @ManyToOne
+    @JoinColumn(name = "terrarium_id")
+    private Terrarium terrariumId;
     @Column(nullable = false)
     private int maxAllowedHumidity;
 
@@ -56,11 +56,10 @@ public class TerrariumProfile {
     public TerrariumProfile() {
     }
 
-    public TerrariumProfile(Long terrariumProfileId, String terrariumProfileName, int minAllowedTemp,
+    public TerrariumProfile(String terrariumProfileName, int minAllowedTemp,
                             int maxAllowedTemp, int minAllowedHumidity, int minAllowedLightLevel,
                             int maxAllowedLightLevel, int minAllowedC02, int maxAllowedC02, int maxAllowedHumidity
                             ) {
-        TerrariumProfileId = terrariumProfileId;
         TerrariumProfileName = terrariumProfileName;
         this.minAllowedTemp = minAllowedTemp;
         this.maxAllowedTemp = maxAllowedTemp;
@@ -70,9 +69,16 @@ public class TerrariumProfile {
         this.minAllowedC02 = minAllowedC02;
         this.maxAllowedC02 = maxAllowedC02;
         this.maxAllowedHumidity = maxAllowedHumidity;
-
     }
 
+
+    public Terrarium getTerrariumId() {
+        return terrariumId;
+    }
+
+    public void setTerrariumId(Terrarium terrariumId) {
+        this.terrariumId = terrariumId;
+    }
 
     public Long getTerrariumProfileId() {
         return TerrariumProfileId;

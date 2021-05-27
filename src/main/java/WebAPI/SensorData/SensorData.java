@@ -6,6 +6,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,8 +16,8 @@ import java.util.Set;
 @Table(name = "sensorData")
 public class SensorData {
 
-    @OneToMany(mappedBy = "sensor",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Sensor> sensors = new HashSet<>();
+
+
 
 
     @GeneratedValue(generator = "sequence-generator")
@@ -29,7 +31,7 @@ public class SensorData {
             }
     )
     @Id
-    @Column(name = "valueId", updatable = false)
+    @Column(name = "valueId")
     private Long valueId;
     @Column(name = "temperatureData")
     private int temperatureData;
@@ -37,18 +39,41 @@ public class SensorData {
     private int C02Data;
     @Column(name = "humidityData")
     private int humidityData;
+    @ManyToOne
+    @JoinColumns({@JoinColumn(name = "valueId", referencedColumnName = "sensor_id", insertable=false, updatable=false),
+    @JoinColumn(name = "typeId", referencedColumnName = "typeId", insertable=false, updatable=false)})
+    private Sensor sensorId;
     @Column(name = "naturalLightLevel")
     private int naturalLightLevel;
+    @Column(name = "time")
+    private Timestamp time;
 
-    public SensorData(Long valueId, int temperatureData, int c02Data, int humidityData, int naturalLightLevel) {
-        this.valueId = valueId;
+    public SensorData( int temperatureData, int c02Data, int humidityData, int naturalLightLevel) {
         this.temperatureData = temperatureData;
         C02Data = c02Data;
         this.humidityData = humidityData;
+        this.time = Timestamp.valueOf(LocalDateTime.now());
         this.naturalLightLevel = naturalLightLevel;
+        this.sensorId = getSensorId();
     }
 
     public SensorData(){}
+
+    public Sensor getSensorId() {
+        return sensorId;
+    }
+
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
+    }
+
+    public void setSensorId(Sensor sensorId) {
+        this.sensorId = sensorId;
+    }
 
     public Long getValueId() {
         return valueId;

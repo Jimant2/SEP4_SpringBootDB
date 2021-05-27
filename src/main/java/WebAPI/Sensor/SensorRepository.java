@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface SensorRepository extends JpaRepository<Sensor, SensorData> {
+public interface SensorRepository extends JpaRepository<Sensor, Long> {
+
 }

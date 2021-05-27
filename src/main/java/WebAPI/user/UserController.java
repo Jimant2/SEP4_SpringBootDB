@@ -28,12 +28,14 @@ public class UserController {
                 new UserNotFoundException(userId)
                 );
     }
+        @PutMapping("user/{userId}")
         User updateUser(@RequestBody User newUser, @PathVariable Long userId)
         {
             return repository.findById(userId)
                     .map(user -> {
                         user.setUserId(newUser.getUserId());
                         user.setUsername(newUser.getUsername());
+                        user.setTerrarium(newUser.getTerrarium());
                         return repository.save(newUser);
                     })
                     .orElseGet(() -> {

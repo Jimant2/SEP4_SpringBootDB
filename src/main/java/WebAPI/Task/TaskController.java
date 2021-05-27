@@ -15,20 +15,22 @@ public class TaskController {
         this.taskRepository = taskRepository;
     }
 
-    @GetMapping("/SensorType")
+    @GetMapping("/Task")
     List<Task> all(){return taskRepository.findAll();}
 
-    @PostMapping("/SensorType")
+    @PostMapping("/Task")
     Task newTask(@RequestBody Task task)
     {
         return taskRepository.save(task);
     }
-    @GetMapping("/SensorType/{taskId}")
+    @GetMapping("/Task/{taskId}")
     Task one(@PathVariable Long taskId){
         return taskRepository.findById(taskId).orElseThrow(
                 () -> new TaskNotFoundException(taskId)
         );
     }
+
+    @PutMapping("/Task/{taskId}")
     Task updateTask(@RequestBody Task newTask, @PathVariable Long taskId)
     {
         return taskRepository.findById(taskId)
@@ -37,7 +39,6 @@ public class TaskController {
                     task.setTime(newTask.getTime());
                     task.setName(newTask.getName());
                     task.setTaskList(newTask.getTaskList());
-                    task.setTerrariumProfile(newTask.getTerrariumProfile());
                     return taskRepository.save(newTask);
                 })
                 .orElseGet(() -> {
@@ -45,7 +46,7 @@ public class TaskController {
                     return taskRepository.save(newTask);
                 });
     }
-    @DeleteMapping("SensorType/{taskId}")
+    @DeleteMapping("Task/{taskId}")
     void deleteTerrariumProfile(@PathVariable Long taskId)
     {
         taskRepository.deleteById(taskId);
