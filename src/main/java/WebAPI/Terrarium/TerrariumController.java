@@ -1,71 +1,72 @@
 package WebAPI.Terrarium;
 
 
-import WebAPI.Task.Task;
-import WebAPI.TaskList.TaskList;
-import WebAPI.TerrariumProfile.TerrariumProfile;
-import WebAPI.TerrariumProfile.TerrariumProfileRepository;
+import WebAPI.MotherboardData.MotherboardData;
+import WebAPI.MotherboardData.MotherboardDataRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 public class TerrariumController {
-    private final TerrariumRepository terrariumRepository;
-    private final TerrariumProfileRepository terrariumProfileRepository;
 
-    TerrariumController(TerrariumRepository terrariumRepository, TerrariumProfileRepository terrariumProfileRepository)
-    {
+    private final TerrariumRepository terrariumRepository;
+    private final MotherboardDataRepository motherboardDataRepository;
+
+
+    public TerrariumController(TerrariumRepository terrariumRepository, MotherboardDataRepository motherboardDataRepository) {
         this.terrariumRepository = terrariumRepository;
-        this.terrariumProfileRepository = terrariumProfileRepository;
+        this.motherboardDataRepository = motherboardDataRepository;
     }
 
     @GetMapping("/Terrarium")
-    List<Terrarium> all(){return terrariumRepository.findAll();}
-
-    @PostMapping("/Terrarium")
-    Terrarium newTerrarium(@RequestBody Terrarium terrarium)
-    {
-        return terrariumRepository.save(terrarium);
+    List<Terrarium> all() {
+        return terrariumRepository.findAll();
     }
-    @GetMapping("/Terrarium/{terrariumId}")
-    Terrarium one(@PathVariable Long terrariumId){
-        return terrariumRepository.findById(terrariumId).orElseThrow(
-                () -> new TerrariumNotFoundException(terrariumId)
+
+    @GetMapping("/Terrarium/{terrariumid}")
+    Terrarium one(@PathVariable Long terrariumid) {
+        return terrariumRepository.findById(terrariumid).orElseThrow(
+                () -> new TerrariumNotFoundException(terrariumid)
         );
     }
 
-    @PutMapping("/Terrarium/{terrariumId}/TerrariumProfile/{profileId}")
-    Terrarium addTerrariumProfileToTerrarium(@PathVariable Long terrariumId, @PathVariable Long profileId) {
-        Terrarium terrarium = terrariumRepository.findById(terrariumId).get();
-        TerrariumProfile terrariumProfile = terrariumProfileRepository.findById(profileId).get();
-        terrarium.addTerrariumProfileToTerrarium(terrariumProfile);
+    @PutMapping("/Terrarium/{terrariumid}/MotherboardData/{recordid}")
+    Terrarium addMotherboardDataToTerrarium(@PathVariable Long terrariumid, @PathVariable Long recordid){
+        Terrarium terrarium = terrariumRepository.findById(terrariumid).get();
+        MotherboardData motherboardData = motherboardDataRepository.findById(recordid).get();
+        terrarium.addMotherboardDataToTerrarium(motherboardData);
         return terrariumRepository.save(terrarium);
     }
 
-
-
-    @PutMapping("/Terrarium/{terrariumId}")
-    Terrarium updateTerrarium(@RequestBody Terrarium newTerrarium, @PathVariable Long terrariumId)
-    {
-        return terrariumRepository.findById(terrariumId)
+    @PutMapping("/Terrarium/{terrariumid}")
+    Terrarium updateTerrarium(@RequestBody Terrarium newTerrarium, @PathVariable Long terrariumid) {
+        return terrariumRepository.findById(terrariumid)
                 .map(terrarium -> {
-                    terrarium.setTerrariumId(newTerrarium.getTerrariumId());
-                    terrarium.setSensor(newTerrarium.getSensor());
-                    terrarium.setTerrariumName(newTerrarium.getTerrariumName());
                     terrarium.setUser(newTerrarium.getUser());
-                    terrarium.setTerrariumProfiles(newTerrarium.getTerrariumProfiles());
-                    return terrariumRepository.save(newTerrarium);
+                    terrarium.setTask(newTerrarium.getTask());
+                    terrarium.setName(newTerrarium.getName());
+                    terrarium.setMotherboardDataSet(newTerrarium.getMotherboardDataSet());
+                    terrarium.setTerrariumProfile1(newTerrarium.getTerrariumProfile1());
+                    terrarium.setMotherboardData(newTerrarium.getMotherboardData());
+                    terrarium.setMotherboardId(newTerrarium.getMotherboardId());
+                    return terrarium;
                 })
                 .orElseGet(() -> {
-                    newTerrarium.setTerrariumId(terrariumId);
+                    newTerrarium.setTerrariumId(terrariumid);
                     return terrariumRepository.save(newTerrarium);
                 });
     }
-    @DeleteMapping("Terrarium/{terrariumId}")
-    void deleteTerrarium(@PathVariable Long terrariumId)
-    {
-        terrariumRepository.deleteById(terrariumId);
+
+    @PostMapping("/Terrarium")
+    Terrarium newTerrarium(@RequestBody Terrarium newTerrarium) {
+        return terrariumRepository.save(newTerrarium);
     }
+
+    @DeleteMapping("/Terrarium/{terrariumid}")
+    void deleteTerrarium(@PathVariable Long terrariumid) {
+        terrariumRepository.deleteById(terrariumid);
+    }
+
+
 }

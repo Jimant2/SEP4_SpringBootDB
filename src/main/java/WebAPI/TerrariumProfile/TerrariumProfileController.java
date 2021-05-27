@@ -24,17 +24,17 @@ public class TerrariumProfileController {
     {
         return terrariumProfileRepository.save(terrariumProfile);
     }
-    @GetMapping("/TerrariumProfile/{profileId}")
-    TerrariumProfile one(@PathVariable Long profileId){
-        return terrariumProfileRepository.findById(profileId).orElseThrow(
-                () -> new TerrariumProfileNotFoundException(profileId)
+    @GetMapping("/TerrariumProfile/{terrariumprofileId}")
+    TerrariumProfile one(@PathVariable Long terrariumprofileId){
+        return terrariumProfileRepository.findById(terrariumprofileId).orElseThrow(
+                () -> new TerrariumProfileNotFoundException(terrariumprofileId)
         );
     }
 
-    @PutMapping("/TerrariumProfile/{profileId}")
-    TerrariumProfile updateTerrariumProfile(@RequestBody TerrariumProfile newTerrariumProfile, @PathVariable Long profileId)
+    @PutMapping("/TerrariumProfile/{terrariumprofileId}")
+    TerrariumProfile updateTerrariumProfile(@RequestBody TerrariumProfile newTerrariumProfile, @PathVariable Long terrariumprofileId)
     {
-        return terrariumProfileRepository.findById(profileId)
+        return terrariumProfileRepository.findById(terrariumprofileId)
                 .map(terrariumProfile -> {
                     terrariumProfile.setTerrariumProfileName(newTerrariumProfile.getTerrariumProfileName());
                     terrariumProfile.setTerrariumProfileId(newTerrariumProfile.getTerrariumProfileId());
@@ -48,16 +48,17 @@ public class TerrariumProfileController {
                     terrariumProfile.setMaxAllowedTemp(newTerrariumProfile.getMaxAllowedTemp());
                     terrariumProfile.setMinAllowedTemp(newTerrariumProfile.getMinAllowedTemp());
                     terrariumProfile.setTerrariumProfileId(newTerrariumProfile.getTerrariumProfileId());
+                    terrariumProfile.setTask(newTerrariumProfile.getTask());
                     return terrariumProfileRepository.save(newTerrariumProfile);
                 })
                 .orElseGet(() -> {
-                    newTerrariumProfile.setTerrariumProfileId(profileId);
+                    newTerrariumProfile.setTerrariumProfileId(terrariumprofileId);
                     return terrariumProfileRepository.save(newTerrariumProfile);
                 });
     }
-    @DeleteMapping("TerrariumProfile/{profileId}")
-    void deleteTerrariumProfile(@PathVariable Long profileId)
+    @DeleteMapping("TerrariumProfile/{terrariumprofileId}")
+    void deleteTerrariumProfile(@PathVariable Long terrariumprofileId)
     {
-        terrariumProfileRepository.deleteById(profileId);
+        terrariumProfileRepository.deleteById(terrariumprofileId);
     }
 }

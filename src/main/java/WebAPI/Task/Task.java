@@ -1,6 +1,5 @@
 package WebAPI.Task;
 
-import WebAPI.TaskList.TaskList;
 
 
 import WebAPI.Terrarium.Terrarium;
@@ -15,8 +14,12 @@ import java.util.Set;
 
 
 @Entity(name =  "Task")
-@Table(name = "task")
+@Table(name = "tasks")
 public class Task {
+
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Terrarium> terrariums = new HashSet<>();
 
 
 
@@ -34,16 +37,15 @@ public class Task {
     )
 
 
-    @Column(name = "task_Id", updatable = false)
+    @Column(name = "taskId", updatable = false)
     private Long taskId;
-    @Column(name = "time", nullable = false)
+    @Column(name = "tasktime", nullable = false)
     private Timestamp time;
-    @Column(nullable = false)
-    private String name;
-    @ManyToOne
-    @JoinColumns({@JoinColumn(name = "task_List_Id", referencedColumnName = "taskListId"),
-                })
-    private TaskList taskList;
+    @Column(name = "name")
+    private String taskname;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profileid")
+    private TerrariumProfile terrariumProfile;
 
 
     public Task()
@@ -51,15 +53,42 @@ public class Task {
 
     }
 
+    public Task(Timestamp time, String taskname) {
+        this.time = time;
+        this.taskname=taskname;
+    }
+
+    public TerrariumProfile getTerrariumProfile() {
+        return terrariumProfile;
+    }
+
+    public void setTerrariumProfile(TerrariumProfile terrariumProfile) {
+        this.terrariumProfile = terrariumProfile;
+    }
+
     public Task(String name) {
         this.time = Timestamp.valueOf(LocalDateTime.now());
-        this.name = name;
-        this.taskList = getTaskList();
 
+    }
+
+    public Set<Terrarium> getTerrariums() {
+        return terrariums;
+    }
+
+    public void setTerrariums(Set<Terrarium> terrariums) {
+        this.terrariums = terrariums;
     }
 
     public Long getTaskId() {
         return taskId;
+    }
+
+    public String getTaskname() {
+        return taskname;
+    }
+
+    public void setTaskname(String taskname) {
+        this.taskname = taskname;
     }
 
     public void setTaskId(Long taskId) {
@@ -74,19 +103,4 @@ public class Task {
         this.time = time;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public TaskList getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(TaskList taskList) {
-        this.taskList = taskList;
-    }
 }

@@ -1,17 +1,18 @@
 package WebAPI.TerrariumProfile;
 
 
+import WebAPI.Task.Task;
 import WebAPI.Terrarium.Terrarium;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.HashSet;
 
 
 
 @Entity(name = "TerrariumProfile")
 @Table(name = "terrariumProfile")
 public class TerrariumProfile {
+
 
 
 
@@ -28,12 +29,16 @@ public class TerrariumProfile {
             }
     )
 
-    @Column(name = "profileId", updatable = false)
+    @Column(name = "terrariumprofileId", updatable = false)
     private Long TerrariumProfileId;
+    @OneToOne(mappedBy = "terrariumProfile" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Task task;
     @Column(nullable = false)
     private String TerrariumProfileName;
     @Column(nullable = false)
     private int minAllowedTemp;
+    @OneToOne(mappedBy = "terrariumProfile1", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Terrarium terrarium;
     @Column(nullable = false)
     private int maxAllowedTemp;
     @Column(nullable = false)
@@ -46,9 +51,6 @@ public class TerrariumProfile {
     private int minAllowedC02;
     @Column(nullable = false)
     private int maxAllowedC02;
-    @ManyToOne
-    @JoinColumn(name = "terrarium_id")
-    private Terrarium terrariumId;
     @Column(nullable = false)
     private int maxAllowedHumidity;
 
@@ -71,13 +73,20 @@ public class TerrariumProfile {
         this.maxAllowedHumidity = maxAllowedHumidity;
     }
 
-
-    public Terrarium getTerrariumId() {
-        return terrariumId;
+    public Terrarium getTerrarium() {
+        return terrarium;
     }
 
-    public void setTerrariumId(Terrarium terrariumId) {
-        this.terrariumId = terrariumId;
+    public void setTerrarium(Terrarium terrarium) {
+        this.terrarium = terrarium;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
     }
 
     public Long getTerrariumProfileId() {

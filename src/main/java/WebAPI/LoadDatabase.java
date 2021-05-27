@@ -1,14 +1,10 @@
 package WebAPI;
 
 
-import WebAPI.Sensor.Sensor;
-import WebAPI.Sensor.SensorRepository;
-import WebAPI.SensorData.SensorData;
-import WebAPI.SensorData.SensorDataRepository;
+import WebAPI.MotherboardData.MotherboardData;
+import WebAPI.MotherboardData.MotherboardDataRepository;
 import WebAPI.Task.Task;
 import WebAPI.Task.TaskRepository;
-import WebAPI.TaskList.TaskList;
-import WebAPI.TaskList.TaskListRepository;
 import WebAPI.Terrarium.Terrarium;
 import WebAPI.Terrarium.TerrariumRepository;
 import WebAPI.TerrariumProfile.TerrariumProfile;
@@ -22,10 +18,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+
 
 @Configuration
 public class LoadDatabase {
@@ -33,32 +28,25 @@ public class LoadDatabase {
 
 
     @Bean
-    CommandLineRunner initDatabase(SensorRepository sensorRepository, SensorDataRepository sensorDataRepository, TaskRepository taskRepository,
-                                   TaskListRepository taskListRepository, TerrariumRepository terrariumRepository, UserRepository userRepository,
+    CommandLineRunner initDatabase(MotherboardDataRepository motherboardDataRepository, TaskRepository taskRepository,
+                                   TerrariumRepository terrariumRepository, UserRepository userRepository,
                                    TerrariumProfileRepository terrariumProfileRepository) {
         return args -> {
 
-            SensorData sensorData1 = new SensorData(32, 26, 28, 19);
-            log.info("Preloading" + sensorDataRepository.save(sensorData1));
+     MotherboardData motherboardData1 = new MotherboardData(32, 18, 40, 28, 41, 57, 18);
+       log.info("Preloading" + motherboardDataRepository.save(motherboardData1));
 
-            Sensor sensor1 = new Sensor();
-            log.info("Preloading" + sensorRepository.save(sensor1));
+       Task task = new Task(Timestamp.valueOf(LocalDateTime.now()), "dshajikhy");
+       log.info("Preloading" + taskRepository.save(task));
 
-            TerrariumProfile terrariumProfile1 = new TerrariumProfile("John Kalimdor/Azeroth", 27, 57, 29, 30, 19, 38, 48, 58);
-            log.info("Preloading" + terrariumProfileRepository.save(terrariumProfile1));
+         TerrariumProfile terrariumProfile1 = new TerrariumProfile("John Kalimdor/Azeroth", 27, 57, 29, 30, 19, 38, 48, 58);
+         log.info("Preloading" + terrariumProfileRepository.save(terrariumProfile1));
 
-            TaskList taskList1 = new TaskList();
-            log.info("Preloading" + taskListRepository.save(taskList1));
+          Terrarium terrarium = new Terrarium("fYOP");
+          log.info("Preloading" + terrariumRepository.save(terrarium));
 
-
-        //    Task task = new Task(Timestamp.valueOf(LocalDateTime.now()), "name");
-        //    log.info("Preloading" + taskRepository.save(task));
-
-            User user = new User("Kyle");
-            log.info("Preloading" + userRepository.save(user));
-
-            Terrarium terrarium = new Terrarium("Terry Stormrage");
-            log.info("Preloading" + terrariumRepository.save(terrarium));
+         User user = new User("Kyle");
+         log.info("Preloading" + userRepository.save(user));
 
 
         };

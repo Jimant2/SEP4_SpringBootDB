@@ -1,8 +1,8 @@
 package WebAPI.Terrarium;
 
-import WebAPI.Sensor.Sensor;
+
+import WebAPI.MotherboardData.MotherboardData;
 import WebAPI.Task.Task;
-import WebAPI.TaskList.TaskList;
 import WebAPI.TerrariumProfile.TerrariumProfile;
 import WebAPI.user.User;
 import org.hibernate.annotations.GenericGenerator;
@@ -11,17 +11,20 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Entity(name = "Terrarium")
 @Table(name = "terrarium")
+@IdClass(TerrariumRelationshipClass.class)
+
 public class Terrarium {
 
 
-    @OneToMany(mappedBy = "terrariumId",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<TerrariumProfile> terrariumProfiles = new HashSet<>();
+    @OneToMany(mappedBy = "terrarium", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<MotherboardData> motherboardDataSet = new HashSet<>();
 
 
-    @Id
+
+
+
     @GeneratedValue(strategy = GenerationType.AUTO)
     @GenericGenerator(
             name = "sequence-generator",
@@ -32,69 +35,79 @@ public class Terrarium {
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
-    @Column(name = "terrarium_Id", updatable = false)
-    private Long TerrariumId;
+
+    @Id
+    @Column(name = "terrariumId", updatable = false)
+    private Long terrariumId;
+    @Id
+    @Column(name = "motherboardId",updatable = false)
+    private Long motherboardId;
+    @Column(name = "name", nullable = false)
+    private String name;
     @ManyToOne
-    @JoinColumns({@JoinColumn(name = "sensor_Id", referencedColumnName = "sensor_id"),
-            @JoinColumn(name = "typeId", referencedColumnName = "typeId")})
-    private Sensor sensor;
-    @Column(nullable = false)
-    private String TerrariumName;
-    @ManyToOne
-    @JoinColumn(name = "task_list_id")
-    private TaskList taskList;
+    @JoinColumn(name = "taskid")
+    private Task task;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_Id")
+    @JoinColumn(name = "userid")
     private User user;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profileid")
+    private TerrariumProfile terrariumProfile1;
+    @ManyToOne
+    @JoinColumn(name = "recordId")
+    private MotherboardData motherboardData;
 
 
 
-    public Terrarium(){}
-
-
-    public Terrarium(String terrariumName) {
-        this.TerrariumName = terrariumName;
-        this.sensor = getSensor();
-        this.user= getUser();
-        this.terrariumProfiles = new HashSet<>();
+    public Terrarium( String  name) {
+        this.name=name;
+        this.motherboardDataSet = new HashSet<>();
+        this.terrariumProfile1 = getTerrariumProfile1();
+        this.task = getTask();
+        this.motherboardId=getMotherboardId();
     }
 
-    public void addTerrariumProfileToTerrarium(TerrariumProfile terrariumProfile)
+    public Terrarium() {
+
+    }
+
+
+    public void addMotherboardDataToTerrarium(MotherboardData motherboardData)
     {
-        this.terrariumProfiles.add(terrariumProfile);
+        this.motherboardDataSet.add(motherboardData);
     }
 
 
-    public Set<TerrariumProfile> getTerrariumProfiles() {
-        return terrariumProfiles;
+    public MotherboardData getMotherboardData() {
+        return motherboardData;
     }
 
-    public void setTerrariumProfiles(Set<TerrariumProfile> terrariumProfiles) {
-        this.terrariumProfiles = terrariumProfiles;
+    public void setMotherboardData(MotherboardData motherboardData) {
+        this.motherboardData = motherboardData;
     }
 
-    public Long getTerrariumId() {
-        return TerrariumId;
+    public TerrariumProfile getTerrariumProfile1() {
+        return terrariumProfile1;
     }
 
-    public void setTerrariumId(Long terrariumId) {
-        TerrariumId = terrariumId;
+    public void setTerrariumProfile1(TerrariumProfile terrariumProfile1) {
+        this.terrariumProfile1 = terrariumProfile1;
     }
 
-    public Sensor getSensor() {
-        return sensor;
+    public Task getTask() {
+        return task;
     }
 
-    public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
+    public void setTask(Task task) {
+        this.task = task;
     }
 
-    public String getTerrariumName() {
-        return TerrariumName;
+    public Set<MotherboardData> getMotherboardDataSet() {
+        return motherboardDataSet;
     }
 
-    public void setTerrariumName(String terrariumName) {
-        TerrariumName = terrariumName;
+    public void setMotherboardDataSet(Set<MotherboardData> motherboardDataSet) {
+        this.motherboardDataSet = motherboardDataSet;
     }
 
     public User getUser() {
@@ -103,5 +116,29 @@ public class Terrarium {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getTerrariumId() {
+        return terrariumId;
+    }
+
+    public void setTerrariumId(Long terrariumId) {
+        this.terrariumId = terrariumId;
+    }
+
+    public Long getMotherboardId() {
+        return motherboardId;
+    }
+
+    public void setMotherboardId(Long motherboardId) {
+        this.motherboardId = motherboardId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

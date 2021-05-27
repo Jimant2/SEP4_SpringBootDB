@@ -1,20 +1,15 @@
-package WebAPI.Sensor;
-
+package WebAPI.MotherboardData;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ControllerAdvice
-public class SensorNotFoundAdvice {
-
+public class MotherboardDataNotFoundAdvice {
     @ResponseBody
-    @ExceptionHandler(SensorNotFoundException.class)
+    @ExceptionHandler(MotherboardDataNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String terrariumProfileNotFoundHandler(SensorNotFoundException ex) {
+    String motherboardDataNotFoundHandler(MotherboardDataNotFoundException ex) {
         return ex.getMessage();
     }
-
 }
