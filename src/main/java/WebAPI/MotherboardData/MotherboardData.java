@@ -50,8 +50,8 @@ public class MotherboardData {
     @Column(name = "eui", nullable = false)
     private int eui;
     @ManyToOne
-    @JoinColumns({@JoinColumn(name = "motherboardId", referencedColumnName = "motherboardId", insertable=false, updatable=false),
-            @JoinColumn(name = "terrariumid", referencedColumnName = "terrariumid", insertable=false, updatable=false)})
+    @JoinColumns({@JoinColumn(name = "motherboardId", referencedColumnName = "motherboardId", insertable = false, updatable = false),
+            @JoinColumn(name = "terrariumid", referencedColumnName = "terrariumid", insertable = false, updatable = false)})
     private Terrarium terrarium;
 
 

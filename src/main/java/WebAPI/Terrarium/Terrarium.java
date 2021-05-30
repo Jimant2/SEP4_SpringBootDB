@@ -13,8 +13,9 @@ import java.util.Set;
 
 @Entity(name = "Terrarium")
 @Table(name = "terrarium")
-@IdClass(TerrariumRelationshipClass.class)
 
+
+@IdClass(TerrariumRelationshipClass.class)
 public class Terrarium {
 
 
@@ -24,22 +25,21 @@ public class Terrarium {
 
 
 
-
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "terrarium_sequence"),
-                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
-            }
-    )
-
+   @GenericGenerator(
+           name = "sequence-generator",
+           strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+           parameters = {
+                   @org.hibernate.annotations.Parameter(name = "sequence_name", value = "terrarium_sequence"),
+                   @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                   @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+           }
+   )
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "terrariumId", updatable = false)
     private Long terrariumId;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "motherboardId",updatable = false)
     private Long motherboardId;
     @Column(name = "name", nullable = false)
@@ -59,12 +59,12 @@ public class Terrarium {
 
 
 
-    public Terrarium( String  name) {
+    public Terrarium (String  name) {
         this.name=name;
         this.motherboardDataSet = new HashSet<>();
         this.terrariumProfile1 = getTerrariumProfile1();
         this.task = getTask();
-        this.motherboardId=getMotherboardId();
+
     }
 
     public Terrarium() {
@@ -72,10 +72,10 @@ public class Terrarium {
     }
 
 
-    public void addMotherboardDataToTerrarium(MotherboardData motherboardData)
-    {
-        this.motherboardDataSet.add(motherboardData);
-    }
+   public void addMotherboardDataToTerrarium(MotherboardData motherboardData)
+   {
+       this.motherboardDataSet.add(motherboardData);
+   }
 
 
     public MotherboardData getMotherboardData() {

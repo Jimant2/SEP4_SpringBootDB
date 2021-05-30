@@ -11,6 +11,7 @@
 	<artifactId>webapi-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>webapi-demo</name>
+
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -22,7 +23,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+
+
+
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -37,6 +42,8 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+
 		</dependency>
 
 
@@ -45,12 +52,14 @@
 
 
 	<build>
-		<finalName>cloud-workshop</finalName>
+		<finalName>SEP4-Terrarium</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+
 			</plugin>
+
 
 
 		</plugins>

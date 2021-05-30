@@ -49,7 +49,6 @@ public class TerrariumController {
                     terrarium.setMotherboardDataSet(newTerrarium.getMotherboardDataSet());
                     terrarium.setTerrariumProfile1(newTerrarium.getTerrariumProfile1());
                     terrarium.setMotherboardData(newTerrarium.getMotherboardData());
-                    terrarium.setMotherboardId(newTerrarium.getMotherboardId());
                     return terrarium;
                 })
                 .orElseGet(() -> {

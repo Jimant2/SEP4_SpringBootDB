@@ -47,8 +47,6 @@ public class LoadDatabase {
 
          User user = new User("Kyle");
          log.info("Preloading" + userRepository.save(user));
-
-
         };
     }
 }
