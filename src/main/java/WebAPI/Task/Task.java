@@ -18,8 +18,7 @@ import java.util.Set;
 public class Task {
 
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Terrarium> terrariums = new HashSet<>();
+
 
 
 
@@ -43,9 +42,14 @@ public class Task {
     private Timestamp time;
     @Column(name = "name")
     private String taskname;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profileid")
-    private TerrariumProfile terrariumProfile;
+    @ManyToOne
+    @JoinColumns({@JoinColumn(name = "terrariumId", updatable = false, insertable = false),
+    @JoinColumn(name = "motherboardId", updatable = false, insertable = false)})
+    private Terrarium terrarium;
+    @Column(name = "toggleVent")
+    private boolean toggleVent;
+    @Column(name = "toggleLight")
+    private boolean toggleLight;
 
 
     public Task()
@@ -58,25 +62,20 @@ public class Task {
         this.taskname=taskname;
     }
 
-    public TerrariumProfile getTerrariumProfile() {
-        return terrariumProfile;
-    }
 
-    public void setTerrariumProfile(TerrariumProfile terrariumProfile) {
-        this.terrariumProfile = terrariumProfile;
-    }
-
-    public Task(String name) {
+    public Task(String name, boolean toggleLight, boolean toggleVent) {
         this.time = Timestamp.valueOf(LocalDateTime.now());
-
+        this.toggleLight = toggleLight;
+        this.toggleVent = toggleVent;
     }
 
-    public Set<Terrarium> getTerrariums() {
-        return terrariums;
+
+    public Terrarium getTerrarium() {
+        return terrarium;
     }
 
-    public void setTerrariums(Set<Terrarium> terrariums) {
-        this.terrariums = terrariums;
+    public void setTerrarium(Terrarium terrarium) {
+        this.terrarium = terrarium;
     }
 
     public Long getTaskId() {
@@ -85,6 +84,22 @@ public class Task {
 
     public String getTaskname() {
         return taskname;
+    }
+
+    public boolean isToggleVent() {
+        return toggleVent;
+    }
+
+    public void setToggleVent(boolean toggleVent) {
+        this.toggleVent = toggleVent;
+    }
+
+    public boolean isToggleLight() {
+        return toggleLight;
+    }
+
+    public void setToggleLight(boolean toggleLight) {
+        this.toggleLight = toggleLight;
     }
 
     public void setTaskname(String taskname) {

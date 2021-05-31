@@ -31,8 +31,6 @@ public class TerrariumProfile {
 
     @Column(name = "terrariumprofileId", updatable = false)
     private Long TerrariumProfileId;
-    @OneToOne(mappedBy = "terrariumProfile" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Task task;
     @Column(nullable = false)
     private String TerrariumProfileName;
     @Column(nullable = false)
@@ -81,13 +79,6 @@ public class TerrariumProfile {
         this.terrarium = terrarium;
     }
 
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
-    }
 
     public Long getTerrariumProfileId() {
         return TerrariumProfileId;

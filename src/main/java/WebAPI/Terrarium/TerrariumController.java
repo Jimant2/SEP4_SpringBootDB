@@ -3,6 +3,8 @@ package WebAPI.Terrarium;
 
 import WebAPI.MotherboardData.MotherboardData;
 import WebAPI.MotherboardData.MotherboardDataRepository;
+import WebAPI.Task.Task;
+import WebAPI.Task.TaskRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +14,13 @@ public class TerrariumController {
 
     private final TerrariumRepository terrariumRepository;
     private final MotherboardDataRepository motherboardDataRepository;
+    private final TaskRepository taskRepository;
 
-
-    public TerrariumController(TerrariumRepository terrariumRepository, MotherboardDataRepository motherboardDataRepository) {
+    public TerrariumController(TerrariumRepository terrariumRepository, MotherboardDataRepository motherboardDataRepository,
+                               TaskRepository taskRepository) {
         this.terrariumRepository = terrariumRepository;
         this.motherboardDataRepository = motherboardDataRepository;
+        this.taskRepository=taskRepository;
     }
 
     @GetMapping("/Terrarium")
@@ -39,6 +43,16 @@ public class TerrariumController {
         return terrariumRepository.save(terrarium);
     }
 
+    @PutMapping("/Terrarium/{terrariumid}/Task/{taskid}")
+    Terrarium addTasksToTerrarium(@PathVariable Long terrariumid, @PathVariable Long taskid){
+        Terrarium terrarium = terrariumRepository.findById(terrariumid).get();
+        Task task = taskRepository.findById(taskid).get();
+        terrarium.addTasksToTerrarium(task);
+        return terrariumRepository.save(terrarium);
+    }
+
+
+
     @PutMapping("/Terrarium/{terrariumid}")
     Terrarium updateTerrarium(@RequestBody Terrarium newTerrarium, @PathVariable Long terrariumid) {
         return terrariumRepository.findById(terrariumid)
@@ -49,6 +63,7 @@ public class TerrariumController {
                     terrarium.setMotherboardDataSet(newTerrarium.getMotherboardDataSet());
                     terrarium.setTerrariumProfile1(newTerrarium.getTerrariumProfile1());
                     terrarium.setMotherboardData(newTerrarium.getMotherboardData());
+                    terrarium.setTasks(newTerrarium.getTasks());
                     return terrarium;
                 })
                 .orElseGet(() -> {

@@ -48,7 +48,6 @@ public class TerrariumProfileController {
                     terrariumProfile.setMaxAllowedTemp(newTerrariumProfile.getMaxAllowedTemp());
                     terrariumProfile.setMinAllowedTemp(newTerrariumProfile.getMinAllowedTemp());
                     terrariumProfile.setTerrariumProfileId(newTerrariumProfile.getTerrariumProfileId());
-                    terrariumProfile.setTask(newTerrariumProfile.getTask());
                     return terrariumProfileRepository.save(newTerrariumProfile);
                 })
                 .orElseGet(() -> {

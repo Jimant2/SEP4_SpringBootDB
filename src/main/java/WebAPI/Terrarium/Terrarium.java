@@ -22,6 +22,9 @@ public class Terrarium {
     @OneToMany(mappedBy = "terrarium", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<MotherboardData> motherboardDataSet = new HashSet<>();
 
+    @OneToMany(mappedBy = "terrarium", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Task> tasks = new HashSet<>();
+
 
 
 
@@ -77,6 +80,11 @@ public class Terrarium {
        this.motherboardDataSet.add(motherboardData);
    }
 
+   public void addTasksToTerrarium(Task task)
+   {
+       this.tasks.add(task);
+   }
+
 
     public MotherboardData getMotherboardData() {
         return motherboardData;
@@ -108,6 +116,14 @@ public class Terrarium {
 
     public void setMotherboardDataSet(Set<MotherboardData> motherboardDataSet) {
         this.motherboardDataSet = motherboardDataSet;
+    }
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public User getUser() {

@@ -37,8 +37,9 @@ public class TaskController {
                 .map(task -> {
                     task.setTaskId(newTask.getTaskId());
                     task.setTime(newTask.getTime());
-                    task.setTerrariums(newTask.getTerrariums());
-                    task.setTerrariumProfile(newTask.getTerrariumProfile());
+                    task.setTerrarium(newTask.getTerrarium());
+                    task.setToggleLight(newTask.isToggleLight());
+                    task.setToggleVent(newTask.isToggleVent());
                     return taskRepository.save(newTask);
                 })
                 .orElseGet(() -> {
